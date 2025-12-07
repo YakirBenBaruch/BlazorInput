@@ -1,0 +1,48 @@
+﻿@page "/t2"
+
+
+<h3>כמות מנות :</h3>
+<input type="number" @bind="num1" />
+
+<br />
+<br />
+
+<h3>מחיר למנה :</h3>
+<input type="number" @bind="num2" />
+
+<br />
+<br />
+
+<button @onclick="CalculateTotalPrice">חשב מחיר כולל</button>
+
+<br />
+<br />
+
+@if (num1 > 300)
+{
+    <div>מחיר כולל עם הנחה: @totalPrice * 0.9</div>
+    <div>מחיר כולל: @totalPrice</div>
+}
+
+<br />
+<br />
+
+@if (totalPrice > 400)
+{
+    totalPrice = totalPrice * 0.9;
+    <div>מחיר כולל : @totalPrice</div>
+    <div> קיבלת גם סוף שבוע בחול מתנה !</div>
+}
+else
+{
+<div>מחיר כולל: @totalPrice</div>
+}
+
+@code {
+    int num1, num2;
+    double totalPrice;
+    void CalculateTotalPrice()
+    {
+        totalPrice = num1 * num2;
+    }
+} 
