@@ -1,13 +1,12 @@
 ﻿@page "/t2"
 
-
-<h3>כמות מנות :</h3>
+<h3>כמות מנות:</h3>
 <input type="number" @bind="num1" />
 
 <br />
 <br />
 
-<h3>מחיר למנה :</h3>
+<h3>מחיר למנה:</h3>
 <input type="number" @bind="num2" />
 
 <br />
@@ -18,31 +17,30 @@
 <br />
 <br />
 
-@if (num1 > 300)
-{
-    <div>מחיר כולל עם הנחה: @totalPrice * 0.9</div>
-    <div>מחיר כולל: @totalPrice</div>
-}
-
-<br />
-<br />
-
-@if (totalPrice > 400)
-{
-    totalPrice = totalPrice * 0.9;
-    <div>מחיר כולל : @totalPrice</div>
-    <div> קיבלת גם סוף שבוע בחול מתנה !</div>
-}
-else
+@if (calculated = true)
 {
     <div>מחיר כולל: @totalPrice</div>
+
+    @if (num1 > 400)
+    {
+        <div>קיבלת גם סוף שבוע בחו"ל מתנה!</div>
+    }
 }
 
 @code {
     int num1, num2;
     double totalPrice;
+    bool calculated = false;
+
     void CalculateTotalPrice()
     {
         totalPrice = num1 * num2;
+
+        if (num1 > 300)
+        {
+            totalPrice *= 0.9;
+        }
+
+        calculated = true;
     }
 }

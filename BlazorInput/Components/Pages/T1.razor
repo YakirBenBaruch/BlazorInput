@@ -1,48 +1,48 @@
-﻿@page "/t2"
+﻿@page "/t1"
 
+<h2>סדרת מספרים</h2>
 
-<h3>כמות מנות :</h3>
-<input type="number" @bind="num1" />
-
-<br />
-<br />
-
-<h3>מחיר למנה :</h3>
-<input type="number" @bind="num2" />
+<h3>מספר ראשון :</h3>
+<input type="number" @bind-value="num1" />
 
 <br />
 <br />
 
-<button @onclick="CalculateTotalPrice">חשב מחיר כולל</button>
+<h3>מספר שני : </h3>
+<input type="number" @bind-value="num2" />
 
 <br />
 <br />
 
-@if (num1 > 300)
-{
-    <div>מחיר כולל עם הנחה: @totalPrice * 0.9</div>
-    <div>מחיר כולל: @totalPrice</div>
-}
+<button @onclick="Series">צור סדרה</button>
 
 <br />
 <br />
 
-@if (totalPrice > 400)
-{
-    totalPrice = totalPrice * 0.9;
-    <div>מחיר כולל : @totalPrice</div>
-    <div> קיבלת גם סוף שבוע בחול מתנה !</div>
-}
-else
-{
-<div>מחיר כולל: @totalPrice</div>
-}
+<h3>התוצאה:</h3>
+<div>@result</div>
 
 @code {
-    int num1, num2;
-    double totalPrice;
-    void CalculateTotalPrice()
+    int num1;
+    int num2;
+    string result = "";
+
+    void Series()
     {
-        totalPrice = num1 * num2;
+        result = "";
+
+        int min = num1;
+        int max = num2;
+
+        if (num1 > num2)
+        {
+            min = num2;
+            max = num1;
+        }
+
+        for (int i = min; i <= max; i++)
+        {
+            result += i + " ";
+        }
     }
-} 
+}
