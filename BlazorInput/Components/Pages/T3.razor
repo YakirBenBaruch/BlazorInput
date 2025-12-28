@@ -1,1 +1,78 @@
 ﻿@page "/t3"
+@page "/ravkav"
+
+<h2>טעינת רב-קו</h2>
+
+<h3>יתרה קיימת בכרטיס:</h3>
+<input type="number" @bind-value="currentBalance" />
+
+<br />
+<br />
+
+<h3>גיל הלקוח:</h3>
+<input type="number" @bind-value="age" />
+
+<br />
+<br />
+
+<h3>סכום שהלקוח מבקש להטעין (30 עד 300):</h3>
+<input type="number" @bind-value="loadAmount" />
+
+<br />
+<br />
+
+<button @onclick="Calc">חשב יתרה לאחר טעינה</button>
+
+<br />
+<br />
+
+@if (showResult)
+{
+    if (!isValid)
+    {
+        <div>שגיאה: סכום טעינה חייב להיות בין 30 ל-300.</div>
+    }
+    else
+    {
+        <div>סכום טעינה שיירשם בכרטיס: @creditedAmount</div>
+        <div>יתרה סופית בכרטיס לאחר טעינה: @finalBalance</div>
+    }
+}
+
+@code {
+    double currentBalance;
+    int age;
+    double loadAmount;
+
+    double creditedAmount;
+    double finalBalance;
+
+    bool showResult = false;
+    bool isValid = true;
+
+    void Calc()
+    {
+        showResult = true;
+
+        if (loadAmount < 30 || loadAmount > 300)
+        {
+            isValid = false;
+            creditedAmount = 0;
+            finalBalance = currentBalance;
+            return;
+        }
+
+        isValid = true;
+
+        if (age <= 18)
+        {
+            creditedAmount = loadAmount * 2;
+        }
+        else
+        {
+            creditedAmount = loadAmount * 1.1;
+        }
+
+        finalBalance = currentBalance + creditedAmount;
+    }
+}

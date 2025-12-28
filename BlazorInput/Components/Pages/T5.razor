@@ -1,0 +1,56 @@
+﻿@page "/t5"
+<h2>מחשבון</h2>
+
+<br />
+<br />
+
+<input type="text" @bind-value ="data1" disabled ="disabled" />
+
+<br />
+<br />
+
+<button @onclick ="b1">1</button>
+<button @onclick ="b2">2</button>
+<button @onclick ="b3">3</button>
+<button @onclick ="add">+</button>
+<button @onclick ="calc">=</button>
+<button @onclick="dot">.</button>
+
+<br />
+<br />
+
+@code
+{
+    char op;
+    double num1;
+    string data1 = "";
+    void b1()
+    {
+        data1 = data1 + "1";
+    }
+    void b2()
+    {
+        data1 = data1 + "2";
+    }
+    void b3()
+    {
+        data1 = data1 + "3";
+    }
+    void add()
+    {
+        num1 =  double.Parse(data1);
+        data1 = "";
+        op = '+';
+    }
+    void calc()
+    {
+        if (op == '+')
+        {
+            data1 = (num1 + double.Parse(data1)).ToString();
+        }
+    }
+    void dot()
+    {
+        data1 += " . ";
+    }
+}
