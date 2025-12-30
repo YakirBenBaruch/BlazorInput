@@ -1,29 +1,119 @@
 ﻿@page "/t5"
-<h2>מחשבון</h2>
+<h2 style="text-align:center; margin: 12px 0 18px 0;">מחשבון</h2>
 
 <br />
 <br />
 
-<input type="text" @bind-value ="data1" disabled ="disabled" />
+<div style="
+    width: 320px;
+    margin: 0 auto;
+    padding: 14px;
+    border-radius: 18px;
+    background: #f6f7fb;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    direction: rtl;">
 
-<br />
-<br />
+    <input type="text" @bind-value="data1" disabled="disabled"
+           style="
+                width: 100%;
+                height: 62px;
+                font-size: 26px;
+                font-weight: 600;
+                text-align: left;
+                padding: 10px 14px;
+                border-radius: 14px;
+                border: 1px solid #d8dbe6;
+                background: #ffffff;
+                box-shadow: inset 0 2px 6px rgba(0,0,0,0.06);
+                outline: none;" />
 
-<button @onclick ="b1">1</button>
-<button @onclick ="b2">2</button>
-<button @onclick ="b3">3</button>
-<button @onclick ="add">+</button>
-<button @onclick ="calc">=</button>
-<button @onclick="dot">.</button>
+    <br />
+    <br />
 
-<br />
-<br />
+    <div style="
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;">
+
+        <button @onclick="b1" style="@BtnNum()">1</button>
+        <button @onclick="b2" style="@BtnNum()">2</button>
+        <button @onclick="b3" style="@BtnNum()">3</button>
+        <button @onclick="b4" style="@BtnNum()">4</button>
+
+        <button @onclick="b5" style="@BtnNum()">5</button>
+        <button @onclick="b6" style="@BtnNum()">6</button>
+        <button @onclick="b7" style="@BtnNum()">7</button>
+        <button @onclick="b8" style="@BtnNum()">8</button>
+
+        <button @onclick="b9" style="@BtnNum()">9</button>
+        <button @onclick="dot" style="@BtnNum()">.</button>
+        <button @onclick="add" style="@BtnOp()">+</button>
+        <button @onclick="minus" style="@BtnOp()">-</button>
+
+        <button @onclick="division" style="@BtnOp()">:</button>
+        <button @onclick="multiplication" style="@BtnOp()">X</button>
+        <button @onclick="pow" style="@BtnOp()">^</button>
+        <button @onclick="sqrt" style="@BtnOp()">√</button>
+
+        <button @onclick="calc" style="@BtnEq()">=</button>
+
+        <button @onclick="clearAll" style="@BtnClear()">איפוס</button>
+    </div>
+</div>
 
 @code
 {
+    // --- עיצוב בלבד (לא נוגע בלוגיקה שלך) ---
+    string BtnBase() => @"
+        height: 54px;
+        border-radius: 14px;
+        border: 1px solid #d8dbe6;
+        font-size: 20px;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 8px 18px rgba(0,0,0,0.10);
+        user-select: none;";
+
+    string BtnNum() => BtnBase() + "background:#ffffff;";
+    string BtnOp() => BtnBase() + "background:#eef2ff;";
+
+    string BtnEq() => @"
+        grid-column: 1 / -1;
+        height: 56px;
+        border-radius: 14px;
+        border: 1px solid #1f2a44;
+        background: #1f2a44;
+        color: white;
+        font-size: 22px;
+        font-weight: 800;
+        cursor: pointer;
+        box-shadow: 0 10px 22px rgba(0,0,0,0.16);
+        user-select: none;";
+
+    string BtnClear() => @"
+        grid-column: 1 / -1;
+        height: 50px;
+        border-radius: 14px;
+        border: 1px solid #b91c1c;
+        background: #fee2e2;
+        color: #7f1d1d;
+        font-size: 18px;
+        font-weight: 800;
+        cursor: pointer;
+        box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+        user-select: none;";
+
     char op;
     double num1;
     string data1 = "";
+
+    void clearAll()
+    {
+        data1 = "";
+        num1 = 0;
+        op = '\0';
+    }
+
     void b1()
     {
         data1 = data1 + "1";
@@ -36,11 +126,69 @@
     {
         data1 = data1 + "3";
     }
+    void b4()
+    {
+        data1 = data1 + "4";
+    }
+    void b5()
+    {
+        data1 = data1 + "5";
+    }
+    void b6()
+    {
+        data1 = data1 + "6";
+    }
+    void b7()
+    {
+        data1 = data1 + "7";
+    }
+    void b8()
+    {
+        data1 = data1 + "8";
+    }
+    void b9()
+    {
+        data1 = data1 + "9";
+    }
+    void dot()
+    {
+        data1 += " . ";
+    }
     void add()
     {
-        num1 =  double.Parse(data1);
+        num1 = double.Parse(data1);
         data1 = "";
         op = '+';
+    }
+    void minus()
+    {
+        num1 = double.Parse(data1);
+        data1 = "";
+        op = '-';
+    }
+    void division()
+    {
+        num1 = double.Parse(data1);
+        data1 = "";
+        op = ':';
+    }
+    void multiplication()
+    {
+        num1 = double.Parse(data1);
+        data1 = "";
+        op = 'X';
+    }
+    void pow()
+    {
+        num1 = double.Parse(data1);
+        data1 = "";
+        op = '^';
+    }
+    void sqrt()
+    {
+        num1 = double.Parse(data1);
+        data1 = "";
+        op = '√';
     }
     void calc()
     {
@@ -48,9 +196,25 @@
         {
             data1 = (num1 + double.Parse(data1)).ToString();
         }
-    }
-    void dot()
-    {
-        data1 += " . ";
+        else if (op == '-')
+        {
+            data1 = (num1 - double.Parse(data1)).ToString();
+        }
+        else if (op == ':')
+        {
+            data1 = (num1 / double.Parse(data1)).ToString();
+        }
+        else if (op == 'X')
+        {
+            data1 = (num1 * double.Parse(data1)).ToString();
+        }
+        else if (op == '^')
+        {
+            data1 = (Math.Pow(num1, double.Parse(data1))).ToString();
+        }
+        else if (op == '√')
+        {
+            data1 = (Math.Sqrt(num1)).ToString();
+        }
     }
 }

@@ -1,1 +1,62 @@
 ﻿@page "/t4"
+
+<h2>מחולל כרטיסי ביקור</h2>
+
+<br />
+<br />
+
+טקסט כותרת:
+<br />
+<input type="text" @bind="titleText" />
+
+<br />
+<br />
+
+טקסט תוכן:
+<br />
+<textarea @bind="contentText" rows="4"></textarea>
+
+<br />
+<br />
+
+צבע גופן:
+<br />
+<input type="text" @bind="fontColor" placeholder="לדוגמה: red או #000000" />
+
+<br />
+<br />
+
+צבע רקע:
+<br />
+<input type="text" @bind="bgColor" placeholder="לדוגמה: yellow או #ffffff" />
+
+<br />
+<br />
+
+<button @onclick="resetAll">איפוס</button>
+
+<br />
+<br />
+<hr />
+<br />
+
+<div style="color:@fontColor; background-color:@bgColor; padding:10px;">
+    <h3>@titleText</h3>
+    <p>@contentText</p>
+</div>
+
+@code
+{
+    string titleText = "כרטיס ביקור";
+    string contentText = "שם מלא:\nטלפון:\nאימייל:\nתפקיד:";
+    string fontColor = "black";
+    string bgColor = "white";
+
+    void resetAll()
+    {
+        titleText = "כרטיס ביקור";
+        contentText = "שם מלא:\nטלפון:\nאימייל:\nתפקיד:";
+        fontColor = "black";
+        bgColor = "white";
+    }
+}

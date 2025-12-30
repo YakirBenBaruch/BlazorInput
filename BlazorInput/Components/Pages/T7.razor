@@ -1,0 +1,82 @@
+﻿@page "/t7"
+
+<h2>נחש את המספר</h2>
+
+<br />
+<br />
+
+נחש מספר בין 0 ל־10:
+<br />
+<input type="number" @bind="guess" min="0" max="10" />
+
+<br />
+<br />
+
+<button @onclick="checkGuess" disabled="@gameOver">נחש</button>
+<button @onclick="newGame">משחק חדש</button>
+
+<br />
+<br />
+
+<div>נסיונות שנותרו: @triesLeft</div>
+
+<br />
+
+@if (message != "")
+{
+    <div>@message</div>
+}
+
+@code
+{
+    Random rnd = new Random();
+
+    int secretNumber;
+    int guess = 0;
+    int triesLeft = 10;
+    bool gameOver = false;
+    string message = "";
+
+    protected override void OnInitialized()
+    {
+        newGame();
+    }
+
+    void newGame()
+    {
+        secretNumber = rnd.Next(0, 11); // מספר בין 0 ל־10
+        triesLeft = 10;
+        guess = 0;
+        gameOver = false;
+        message = "";
+    }
+
+    void checkGuess()
+    {
+        if (gameOver)
+        {
+            return;
+        }
+
+        triesLeft--;
+
+        if (guess == secretNumber)
+        {
+            message = "ניחשת נכון!";
+            gameOver = true;
+        }
+        else if (triesLeft == 0)
+        {
+            message = "GAME OVER";
+            gameOver = true;
+        }
+        else if (guess < secretNumber)
+        {
+            message = "המספר קטן מדי";
+        }
+        else
+        {
+            message = "המספר גדול מדי";
+        }
+    }
+}
