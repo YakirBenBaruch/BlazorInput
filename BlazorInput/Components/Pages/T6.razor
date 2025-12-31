@@ -1,2 +1,246 @@
 ﻿@page "/t6"
 
+<h2 style="text-align:center; margin: 12px 0 18px 0;">תרגיל 6 - משחק הימורים</h2>
+
+<br />
+<br />
+
+<div style="
+    width: 420px;
+    margin: 0 auto;
+    padding: 16px;
+    border-radius: 18px;
+    background: #f6f7fb;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    direction: rtl;">
+
+    <div style="
+        display:flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 14px;
+        border-radius: 14px;
+        background: #ffffff;
+        border: 1px solid #d8dbe6;
+        box-shadow: inset 0 2px 6px rgba(0,0,0,0.05);
+        font-weight: 900;
+        font-size: 16px;">
+        <span>קופה:</span>
+        <span>@balance ₪</span>
+    </div>
+
+    <br />
+
+    @if (!gameOver)
+    {
+        <div style="
+                padding: 12px 14px;
+                border-radius: 14px;
+                background: #ffffff;
+                border: 1px solid #d8dbe6;
+                box-shadow: inset 0 2px 6px rgba(0,0,0,0.05);">
+
+            <div style="font-weight:900; margin-bottom:8px;">
+                הכנס סכום הימור (1 עד @balance):
+            </div>
+
+            <input type="number" @bind="bet" min="1" max="@balance"
+                   style="
+                            width: 100%;
+                            height: 44px;
+                            border-radius: 12px;
+                            border: 1px solid #d8dbe6;
+                            padding: 0 12px;
+                            font-size: 16px;
+                            font-weight: 800;
+                            background: #ffffff;
+                            outline: none;" />
+        </div>
+
+        <br />
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <button @onclick="playRound"
+                    style="
+                            height: 46px;
+                            border-radius: 14px;
+                            border: 1px solid #1f2a44;
+                            background: #1f2a44;
+                            color: white;
+                            font-size: 16px;
+                            font-weight: 900;
+                            cursor: pointer;
+                            box-shadow: 0 10px 22px rgba(0,0,0,0.12);
+                            user-select: none;">
+                לחץ להגרלת המספרים
+            </button>
+
+            <button @onclick="stopGame"
+                    style="
+                            height: 46px;
+                            border-radius: 14px;
+                            border: 1px solid #b91c1c;
+                            background: #fee2e2;
+                            color: #7f1d1d;
+                            font-size: 16px;
+                            font-weight: 900;
+                            cursor: pointer;
+                            box-shadow: 0 10px 22px rgba(0,0,0,0.10);
+                            user-select: none;">
+                סיים משחק
+            </button>
+        </div>
+
+        <br />
+        <br />
+
+        <div style="
+                display:flex;
+                justify-content: space-between;
+                gap: 10px;
+                padding: 12px 14px;
+                border-radius: 14px;
+                background: #ffffff;
+                border: 1px solid #d8dbe6;
+                box-shadow: inset 0 2px 6px rgba(0,0,0,0.05);">
+
+            <div style="font-weight:900;">הגרלה:</div>
+
+            <div style="display:flex; gap:10px;">
+                <div style="width:44px; height:44px; border-radius: 12px; border:1px solid #d8dbe6; display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:900; background:#f8fafc;">
+                    @n1
+                </div>
+                <div style="width:44px; height:44px; border-radius: 12px; border:1px solid #d8dbe6; display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:900; background:#f8fafc;">
+                    @n2
+                </div>
+                <div style="width:44px; height:44px; border-radius: 12px; border:1px solid #d8dbe6; display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:900; background:#f8fafc;">
+                    @n3
+                </div>
+            </div>
+        </div>
+
+        <br />
+
+        @if (message != "")
+        {
+            <div style="
+                        padding: 12px 14px;
+                        border-radius: 14px;
+                        background: #ffffff;
+                        border: 1px solid #d8dbe6;
+                        box-shadow: 0 10px 22px rgba(0,0,0,0.08);
+                        font-weight: 900;">
+                @message
+            </div>
+        }
+    }
+    else
+    {
+        <div style="
+                padding: 14px;
+                border-radius: 14px;
+                background: #ffffff;
+                border: 1px solid #d8dbe6;
+                box-shadow: 0 10px 22px rgba(0,0,0,0.10);
+                font-weight: 900;">
+            @message
+        </div>
+
+        <br />
+
+        <button @onclick="newGame"
+                style="
+                        width: 100%;
+                        height: 46px;
+                        border-radius: 14px;
+                        border: 1px solid #1f2a44;
+                        border: 1px solid #1f2a44;
+                        background: #1f2a44;
+                        color: white;
+                        font-size: 16px;
+                        font-weight: 900;
+                        cursor: pointer;
+                        box-shadow: 0 10px 22px rgba(0,0,0,0.12);
+                        user-select: none;">
+            משחק חדש
+        </button>
+    }
+</div>
+
+@code
+{
+    Random rnd = new Random();
+
+    int balance = 1000;
+    int bet = 1;
+
+    int n1 = 0;
+    int n2 = 0;
+    int n3 = 0;
+
+    string message = "";
+    bool gameOver = false;
+
+    void newGame()
+    {
+        balance = 1000;
+        bet = 1;
+        n1 = 0;
+        n2 = 0;
+        n3 = 0;
+        message = "";
+        gameOver = false;
+    }
+
+    void stopGame()
+    {
+        gameOver = true;
+        message = "המשחק הסתיים לפי בקשת המהמר.";
+    }
+
+    void playRound()
+    {
+        if (gameOver)
+        {
+            return;
+        }
+
+        if (bet < 1 || bet > balance)
+        {
+            message = "סכום הימור לא תקין.";
+            return;
+        }
+
+        n1 = rnd.Next(0, 10);
+        n2 = rnd.Next(0, 10);
+        n3 = rnd.Next(0, 10);
+
+        if (n1 == n2 && n2 == n3)
+        {
+            balance += bet * 10;
+            message = "כל שלושת המספרים זהים! זכית פי 10 מסכום ההימור.";
+        }
+        else if (n1 == n2 || n1 == n3 || n2 == n3)
+        {
+            balance += bet * 2;
+            message = "יש לפחות שני מספרים זהים! זכית פי 2 מסכום ההימור.";
+        }
+        else
+        {
+            balance -= bet;
+            message = "אין התאמות. סכום ההימור ירד מהקופה.";
+        }
+
+        if (balance <= 0)
+        {
+            balance = 0;
+            gameOver = true;
+            message = "GAME OVER - אין לך יותר כסף בקופה.";
+        }
+
+        if (balance > 0 && bet > balance)
+        {
+            bet = balance;
+        }
+    }
+}
